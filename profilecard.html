@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Hiếu Hạnh (Sales Admin)</title>
+    <!-- Import Google Fonts cho Typography nghệ thuật -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ========================================================
+           CSS SCOPING: Dùng #hh-luxury-card-wrapper để không 
+           bị lỗi giao diện khi nhúng vào website khác
+        ======================================================== */
+        
+        #hh-luxury-card-wrapper {
+            /* Biến màu sắc Pink Luxury Pastel (Chế độ Sáng - Light Mode) */
+            --bg-light: #fff0f5; /* Màu nền LavenderBlush */
+            --glass-bg: rgba(255, 255, 255, 0.55);
+            --glass-border: rgba(248, 165, 194, 0.5);
+            --pink-accent: #d87093; /* Màu nhấn hồng đậm để dễ đọc trên nền sáng */
+            --pink-primary: #f8a5c2;
+            --pink-glow: rgba(248, 165, 194, 0.6);
+            --text-dark: #4a2c3a; /* Chữ tối màu sang trọng */
+            --text-muted: #735363; /* Chữ mô tả xám hồng */
+            
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-light);
+            /* Gradient sáng mượt mà */
+            background: linear-gradient(135deg, #fff5f7 0%, #ffe4e1 100%);
+            
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            min-height: 100vh; /* Có thể điều chỉnh khi nhúng */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            box-sizing: border-box;
+        }
+
+        #hh-luxury-card-wrapper * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Container của toàn bộ Card Glassmorphism */
+        #hh-luxury-card-wrapper .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            /* Đổi bóng đổ cho nền sáng */
+            box-shadow: 0 16px 40px rgba(216, 112, 147, 0.15), inset 0 0 20px rgba(255, 255, 255, 0.8);
+            width: 100%;
+            max-width: 420px;
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            position: relative;
+            z-index: 10; /* Đặt trên lớp hoa nhí */
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        #hh-luxury-card-wrapper .glass-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* --- 1. Phần Avatar & Bong bóng thoại --- */
+        #hh-luxury-card-wrapper .avatar-section {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            margin: 1rem auto 2rem auto;
+        }
+
+        #hh-luxury-card-wrapper .avatar-container {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            padding: 4px;
+            background: linear-gradient(135deg, #ffe4e1, #d87093);
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 0 20px rgba(216, 112, 147, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        #hh-luxury-card-wrapper .avatar-container:hover {
+            box-shadow: 0 0 30px var(--pink-glow);
+            transform: scale(1.02);
+        }
+
+        #hh-luxury-card-wrapper .avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #fff;
+        }
+
+        #hh-luxury-card-wrapper .upload-overlay {
+            position: absolute;
+            inset: 4px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+            color: var(--pink-accent);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        #hh-luxury-card-wrapper .avatar-container:hover .upload-overlay {
+            opacity: 1;
+        }
+
+        /* Bong bóng thoại (Được điều chỉnh cho nền sáng) */
+        #hh-luxury-card-wrapper .chat-bubble {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--glass-border);
+            color: var(--pink-accent);
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(216, 112, 147, 0.15);
+            animation: floatBubble 3s ease-in-out infinite;
+        }
+
+        #hh-luxury-card-wrapper .chat-bubble::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-style: solid;
+        }
+
+        #hh-luxury-card-wrapper .bubble-1 {
+            top: 10px;
+            left: -50px;
+            animation-delay: 0s;
+        }
+        #hh-luxury-card-wrapper .bubble-1::after {
+            border-width: 6px 0 6px 8px;
+            border-color: transparent transparent transparent rgba(255, 255, 255, 0.85);
+            right: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        #hh-luxury-card-wrapper .bubble-2 {
+            top: -20px;
+            right: -30px;
+            animation-delay: 1s;
+        }
+        #hh-luxury-card-wrapper .bubble-2::after {
+            border-width: 6px 8px 6px 0;
+            border-color: transparent rgba(255, 255, 255, 0.85) transparent transparent;
+            left: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        #hh-luxury-card-wrapper .bubble-3 {
+            bottom: 20px;
+            right: -60px;
+            animation-delay: 0.5s;
+        }
+        #hh-luxury-card-wrapper .bubble-3::after {
+            border-width: 6px 8px 6px 0;
+            border-color: transparent rgba(255, 255, 255, 0.85) transparent transparent;
+            left: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        @keyframes floatBubble {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        /* --- 2. Phần Thông tin (Giữa) --- */
+        #hh-luxury-card-wrapper .info-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        #hh-luxury-card-wrapper .name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Tag viền sáng cho Chức danh */
+        #hh-luxury-card-wrapper .title-tag {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--pink-accent);
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid var(--pink-accent);
+            box-shadow: 0 4px 10px rgba(248, 165, 194, 0.2);
+        }
+
+        #hh-luxury-card-wrapper .slogan {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem;
+            color: var(--pink-accent);
+            line-height: 1.3;
+            margin: 0.5rem 0;
+            /* Bóng chữ sáng hơn cho nền sáng */
+            text-shadow: 0 1px 4px rgba(216, 112, 147, 0.2);
+        }
+
+        #hh-luxury-card-wrapper .description {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+            padding: 0 1rem;
+            font-weight: 500;
+        }
+
+        /* --- 3. Phần Nút bấm (Dưới) --- */
+        #hh-luxury-card-wrapper .action-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        #hh-luxury-card-wrapper .btn {
+            width: 100%;
+            padding: 14px 24px;
+            border-radius: 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            border: none;
+            outline: none;
+            text-decoration: none;
+        }
+
+        /* Nút 1: Phát sáng khi hover */
+        #hh-luxury-card-wrapper .btn-glow {
+            background: linear-gradient(45deg, #d87093, var(--pink-primary));
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(216, 112, 147, 0.4);
+        }
+
+        #hh-luxury-card-wrapper .btn-glow:hover {
+            box-shadow: 0 0 20px var(--pink-glow), 0 0 35px var(--pink-glow);
+            transform: translateY(-2px);
+        }
+
+        /* Nút 2: Tối giản (Phù hợp với nền sáng) */
+        #hh-luxury-card-wrapper .btn-minimal {
+            background: rgba(255, 255, 255, 0.6);
+            color: var(--text-dark);
+            border: 1px solid var(--pink-primary);
+            backdrop-filter: blur(5px);
+        }
+
+        #hh-luxury-card-wrapper .btn-minimal:hover {
+            background: rgba(255, 255, 255, 1);
+            color: var(--pink-accent);
+            border-color: var(--pink-accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(216, 112, 147, 0.15);
+        }
+
+        /* --- 4. Hiệu ứng Hoa nhí bay (Đã chỉnh sửa đồng nhất) --- */
+        #hh-luxury-card-wrapper .flowers-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Không cản trở click */
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        #hh-luxury-card-wrapper .flower {
+            position: absolute;
+            top: -30px;
+            color: #f8a5c2; /* Màu hoa phù hợp nền */
+            font-size: 18px; /* Kích thước đồng nhất */
+            opacity: 0.8; /* Độ mờ đồng nhất */
+            /* Rơi thẳng đứng không có trục X, tốc độ 8s */
+            animation: fallUniform linear infinite;
+            animation-duration: 8s;
+        }
+
+        /* Keyframe hoa rơi thẳng đứng đồng nhất */
+        @keyframes fallUniform {
+            0% {
+                transform: translateY(-30px);
+                opacity: 0;
+            }
+            5% { opacity: 0.8; }
+            95% { opacity: 0.8; }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive nhỏ hơn */
+        @media (max-width: 480px) {
+            #hh-luxury-card-wrapper .glass-card {
+                padding: 2rem 1rem;
+                margin: 1rem;
+            }
+            #hh-luxury-card-wrapper .slogan {
+                font-size: 1.8rem;
+            }
+            #hh-luxury-card-wrapper .chat-bubble {
+                font-size: 0.65rem;
+            }
+            #hh-luxury-card-wrapper .bubble-1 { left: -30px; }
+            #hh-luxury-card-wrapper .bubble-2 { right: -10px; }
+            #hh-luxury-card-wrapper .bubble-3 { right: -20px; bottom: 10px; }
+        }
+
+        /* --- 5. Style cho tính năng chỉnh sửa text trực tiếp --- */
+        [contenteditable="true"] {
+            outline: none; /* Bỏ viền xanh mặc định khi click vào */
+            transition: background-color 0.3s ease;
+            border-radius: 4px;
+        }
+
+        [contenteditable="true"]:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+            cursor: text; /* Đổi con trỏ chuột thành dạng text khi hover */
+        }
+
+        [contenteditable="true"]:focus {
+            background-color: rgba(255, 255, 255, 0.7);
+            border-bottom: 1px dashed var(--pink-primary); /* Thêm gạch dưới đứt nét để nhận biết đang sửa */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- KHUNG CHÍNH (Bắt đầu copy từ đây nếu muốn nhúng) -->
+    <div id="hh-luxury-card-wrapper">
+        
+        <!-- Lớp hoa rơi nền -->
+        <div class="flowers-layer" id="flowersContainer"></div>
+
+        <!-- Khung Card Glassmorphism -->
+        <div class="glass-card">
+            
+            <!-- PHẦN 1: AVATAR & BONG BÓNG -->
+            <div class="avatar-section">
+                <!-- Click vào đây để đổi ảnh từ máy tính -->
+                <div class="avatar-container" onclick="document.getElementById('avatar-upload').click()">
+                    <!-- Thay đổi src thành file ảnh barbie_3.jpg bạn yêu cầu -->
+                    <img id="avatar-preview" class="avatar" src="barbie_3.jpg" onerror="this.src='https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80'" alt="Avatar Barbie">
+                    <div class="upload-overlay">Thay ảnh</div>
+                </div>
+                <!-- Input file ẩn để chọn ảnh từ máy tính -->
+                <input type="file" id="avatar-upload" accept="image/*" style="display: none;">
+
+                <!-- Các bong bóng thoại (Thêm contenteditable="true" để sửa trực tiếp) -->
+                <div class="chat-bubble bubble-1" contenteditable="true" spellcheck="false">Tận tâm</div>
+                <div class="chat-bubble bubble-2" contenteditable="true" spellcheck="false">Chuyên nghiệp</div>
+                <div class="chat-bubble bubble-3" contenteditable="true" spellcheck="false">Chốt sale siêu tốc</div>
+            </div>
+
+            <!-- PHẦN 2: THÔNG TIN CÁ NHÂN -->
+            <div class="info-section">
+                <!-- Tên (Thêm contenteditable="true") -->
+                <h1 class="name" contenteditable="true" spellcheck="false">Hiếu Hạnh</h1>
+                
+                <!-- Chức danh (Thêm contenteditable="true") -->
+                <div class="title-tag" contenteditable="true" spellcheck="false">Sales Admin</div>
+                
+                <!-- Slogan (Thêm contenteditable="true") -->
+                <div class="slogan" contenteditable="true" spellcheck="false">"Những gì xinh đẹp<br>thường đứng một mình :>"</div>
+                
+                <!-- Mô tả (Thêm contenteditable="true") -->
+                <p class="description" contenteditable="true" spellcheck="false">
+                    Người đứng sau hỗ trợ đội sales "chốt đơn như gió". Phía sau mỗi đơn hàng thành công luôn có một Sales Admin đang âm thầm kiểm tra lại file lần thứ ba =)))
+                </p>
+            </div>
+
+            <!-- PHẦN 3: NÚT BẤM TƯƠNG TÁC -->
+            <div class="action-section">
+                <!-- Chữ trên nút cũng có thể sửa được -->
+                <a href="#" class="btn btn-glow" contenteditable="true" spellcheck="false">Kết nối ngay</a>
+                <a href="#" class="btn btn-minimal" contenteditable="true" spellcheck="false">Xem Portfolio</a>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- KẾT THÚC KHUNG CHÍNH -->
+
+    <!-- JAVASCRIPT HỖ TRỢ -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            /* 1. TÍNH NĂNG THAY ĐỔI ẢNH TỪ MÁY TÍNH */
+            const avatarUpload = document.getElementById('avatar-upload');
+            const avatarPreview = document.getElementById('avatar-preview');
+
+            avatarUpload.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        // Cập nhật thẻ img với ảnh vừa tải lên từ máy tính
+                        avatarPreview.src = e.target.result;
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            /* 2. HIỆU ỨNG TẠO HOA RƠI ĐỒNG NHẤT */
+            const flowersContainer = document.getElementById('flowersContainer');
+            const maxFlowers = 25; // Số lượng hoa tối đa xuất hiện cùng lúc
+
+            function createFlower() {
+                // Giới hạn số lượng hoa trong DOM để tối ưu hiệu suất
+                if(flowersContainer.childElementCount > maxFlowers) return;
+
+                const flower = document.createElement('div');
+                flower.classList.add('flower');
+                
+                // Sử dụng duy nhất 1 loại hoa để đảm bảo tính đồng nhất
+                flower.innerText = '🌸';
+                
+                // Cài đặt vị trí rơi ngẫu nhiên theo chiều ngang nhưng cánh đồng nhất
+                flower.style.left = `${Math.random() * 100}%`;
+
+                flowersContainer.appendChild(flower);
+
+                // Tự động xóa thẻ sau khi rơi xong (8s) để giải phóng bộ nhớ
+                setTimeout(() => {
+                    flower.remove();
+                }, 8000); 
+            }
+
+            // Tạo hoa mới mỗi 500ms tạo nhịp rơi đều đặn
+            setInterval(createFlower, 500);
+        });
+    </script>
+</body>
+</html>
